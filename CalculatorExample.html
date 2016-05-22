@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<style>
+/* Make it look pretty and shit */
+
+button{
+width: 5%; /* We specifiy the height to be the same as the width in our JQuery. This keeps the element square and responsive at all times */
+min-width: 30px; /* But the element can be no smaller than 30px */
+padding: 5px; /* Self-explanitory */
+margin: 5px; /* Separate it by 5px from surrounding elements, this is NOT the same as 'padding'. Think of padding as internal, margin is external to the element */
+border-radius: 5px; /* Self-explanitory */
+border: none; /* Self-explanitory */
+}
+button:hover{
+background-color: orange; /* Self-explanitory */
+}
+#calculator{
+text-align: center; /* I'm kind of cheating here. Remove this and see what happens. (Handy trick if you have a group of elements that need centering) */
+}
+#messageContainer{
+border-radius: 5px; /* Self-explanitory */
+background-color: #CCC; /* Self-explanitory */
+display: block; /* You don't need to be inline with anything, so occupy a space */
+margin: 0 auto; /* Position the block level element in the center (0 top/bottom, auto left/right) */
+
+width: 30%; /* Self-explanitory */
+height: 50px; /* Self-explanitory */
+}
+#message{
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 auto;
+	
+}
+</style>
+</head>
+
+<body>
+<div id='calculator'>
+    <button id="1">1</button>
+    <button id="2">2</button>
+    <button id="3">3</button>
+    <button id="4">4</button>
+    <button id="5">5</button>
+    <button id="6">6</button>
+    <button id="7">7</button>
+    <button id="8">8</button>
+    <button id="9">9</button>
+    <button id="plus" class='operation'>+</button>
+    <button id="0">0</button>
+    <button id="minus" class='operation'>-</button>
+    <button id="multiply" class='operation'>*</button>
+    <button id="divide" class='operation'>/</button>
+    <button id="equals" class='operation'>=</button>
+
+<div id="message">
+
+</div>
+
+</div> <!-- End of calculator -->
+
+<script>
+
+// Every third button, add a break into the html.
+$('button:nth-child(3n+3)').after("<br/>");
+
+/* When the document loads set the height of the button, our width is specified in the <style> tags in the head */
+$('button').height($('button').width());
+
+/* You will also need to specifiy it every time the window is re-sized */
+$(window).resize(function(){
+	$('button').height($('button').width());
+});
+
+// Define an empty string before any buttons are clicked
+var mathString = "";
+
+$('button').on('click', function() {
+	
+	// If the button doesn't have an id of 'equals'
+	if($(this).attr("id") !== "equals"){
+		// And it doesn't have a class of 'operation' EG: -, /, *, +
+		if(!$(this).hasClass("operation")){
+			// It must be a number, so parse THIS BUTTON and add it into the mathString
+			mathString += parseFloat($(this).text());
+		} else {
+			// It is an operation, so add it as a string to the mathString. Result: "+" or "-" etc
+			mathString += $(this).text();
+		}
+		// Put the mathString into the message element
+		$('#message').text(mathString);
+	} else {
+	// If THIS BUTTON is equals then evaluate the mathString and add it into the message div after.
+	mathString = eval(mathString);
+	$('#message').text(mathString);
+	}
+});
+
+</script>
+</body>
+</html>
